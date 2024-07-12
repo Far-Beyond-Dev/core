@@ -1,12 +1,12 @@
-//    //////////////////////////////////////
-//    // Lets import some tools we need.  //
-//    //////////////////////////////////////
-//    
+//////////////////////////////////////
+// Lets import some tools we need.  //
+//////////////////////////////////////
+
 use socketioxide::extract::{SocketRef, Data};
 use serde::Deserialize;
 use tracing::info;
 use crate::define_event;
-//    
+ 
 ////////////////////////////////////////////////
 // Next we will define some structs our code  //
 // will use to store and organize data.       //
@@ -25,13 +25,13 @@ struct ChatMessage {
 //  when a new player connects, so we will     //
 //  define our event listeners here.           //
 /////////////////////////////////////////////////
-//    
+
 pub fn init(socket: SocketRef) {
     info!("Starting chat subsystem...");
     
-        define_event!(socket, "whisper", handle_whisper(socket.clone(), "", "", ""));
-        define_event!(socket, "broadcast", handle_broadcast(socket.clone(), "", ""));
-        define_event!(socket, "command", handle_help(socket.clone(), ""));
+        define_event!(socket.clone(), "whisper", handle_whisper(socket, "", "", ""));
+        define_event!(socket.clone(), "broadcast", handle_broadcast(socket, "", ""));
+        define_event!(socket.clone(), "command", handle_help(socket, ""));
     
 }
     
