@@ -26,13 +26,15 @@ struct ChatMessage {
 //  define our event listeners here.           //
 /////////////////////////////////////////////////
 
-pub fn init(socket: SocketRef) {
+pub fn init(socket: &SocketRef) {
     info!("Starting chat subsystem...");
     
-        define_event!(socket.clone(), "whisper", handle_whisper(socket, "", "", ""));
-        define_event!(socket.clone(), "broadcast", handle_broadcast(socket, "", ""));
-        define_event!(socket.clone(), "command", handle_help(socket, ""));
-    
+    let def_socket: SocketRef = socket.clone();
+    define_event!(def_socket,
+        "whisper", handle_whisper(socket.clone(), "", "", ""),
+        "broadcast", handle_broadcast(socket.clone(), "", ""),
+        "command", handle_help(socket.clone(), "")
+    );
 }
     
     ////////////////////////////////////////////////////
