@@ -26,7 +26,7 @@ struct ChatMessage {
 //  define our event listeners here.           //
 /////////////////////////////////////////////////
 
-pub fn init(socket: &SocketRef) {
+pub fn init(socket: SocketRef) {
     info!("Starting chat subsystem...");
     
     let def_socket: SocketRef = socket.clone();
