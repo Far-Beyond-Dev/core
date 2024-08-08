@@ -14,55 +14,63 @@
 // Note: This system is designed to be flexible, allowing for both actors that
 // use tick-based updates and those that don't, with minimal performance overhead.
 
-use std::time::{Duration, Instant};
-
-pub struct Timer {
-    last_tick: Instant, 
-    interval: Duration,
+pub trait Object {
+    fn begin_play(&mut self);
+    fn end_play(&mut self);
+    fn tick(&mut self, delta_time: f32);
+    
+    fn get_name(&self) -> &str;
+    fn set_name(&mut self, name: String);
+    
+    fn add_tag(&mut self, tag: String);
+    fn has_tag(&self, tag: &str) -> bool;
+    fn get_tags(&self) -> &[String];
 }
 
-impl Timer {
-    pub fn new(interval: Duration) -> Self {
+pub struct BaseObject {
+    name: String,
+    tags: Vec<String>,
+}
+
+impl BaseObject {
+    pub fn new(name: String) -> Self {
         Self {
-            last_tick: Instant::now(),
-            interval,
-        }
-    }
-
-    pub fn tick(&mut self) -> bool {
-        let now = Instant::now();
-        if now.duration_since(self.last_tick) >= self.interval {
-            self.last_tick = now;
-            true
-        } else {
-            false
+            name,
+            tags: Vec::new(),
         }
     }
 }
 
-pub struct BaseActor {
-    pub position: (f32, f32),
-    pub health: f32,
-}
-
-impl BaseActor {
-    pub fn new(position: (f32, f32), health: f32) -> Self {
-        Self {
-            position,
-            health,
-        }
+impl Object for BaseObject {
+    fn begin_play(&mut self) {
+        println!("Object '{}' began play", self.name);
     }
-}
 
-pub trait Actor {
-    fn init(&mut self);
-    fn update(&mut self);
-    fn render(&self);
-    fn on_tick(&mut self) {}
-    fn uses_tick(&self) -> bool {
-        false
+    fn end_play(&mut self) {
+        println!("Object '{}' ended play", self.name);
     }
-    fn get_timer(&mut self) -> Option<&mut Timer> {
-        None
+
+    fn tick(&mut self, _delta_time: f32) {
+        // Base objects typically don't need updating
+    }
+
+    fn get_name(&self) -> &str {
+        &self.name
+    }
+
+    fn set_name(&mut self, name: String) {
+        self.name = name;
+    }
+
+    fn add_tag(&mut self, tag: String) {
+        self.tags.push(tag);
+    }
+
+    fn has_tag(&self, tag: &str) -> bool {
+        self.tags.contains(&tag.to_string())
+    }
+
+    fn get_tags(&self) -> &[String] {
+        &self.tags
     }
 }
