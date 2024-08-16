@@ -1,3 +1,12 @@
+//////////////////////////////////////
+// Lets import some tools we need.  //
+//////////////////////////////////////
+
+use socketioxide::extract::{SocketRef, Data};
+use serde::Deserialize;
+use tracing::info;
+use crate::define_event;
+ 
 /// Initializes the chat subsystem.
 ///
 /// This function sets up event listeners for various chat-related events
