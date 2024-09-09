@@ -3,9 +3,9 @@
 //////////////////////////////////////
 
 use socketioxide::extract::{SocketRef, Data};
-use serde::Deserialize;
-use tracing::info;
-use crate::{define_event, players};
+use std::sync::{Arc, Mutex};
+use log::info;
+use crate::{define_event, Player};
  
 /// Initializes the chat subsystem.
 ///
@@ -15,7 +15,7 @@ use crate::{define_event, players};
 /// # Arguments
 ///
 /// * `socket` - A reference to the socket connection for the player.
-pub fn init(socket: SocketRef) {
+pub fn init(socket: SocketRef, players: Arc<Mutex<Vec<Player>>>) {
     info!("Starting chat subsystem...");
    
     let def_socket: SocketRef = socket.clone();
