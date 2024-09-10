@@ -6,7 +6,7 @@ use std::time::{Duration, Instant};
 use serde::Deserialize;
 use tracing::{debug, info};
 use crate::structs::*;
-use crate::{define_event, players};
+use crate::{define_event, Player};
 
 #[derive(Debug, Deserialize)]
 struct WhisperData {
@@ -14,7 +14,7 @@ struct WhisperData {
     message: String,
 }
 
-pub fn init(socket: SocketRef) {
+pub fn init(socket: SocketRef, players: Arc<Mutex<Vec<Player>>>) {
     socket.on("whisper", |socket: SocketRef, Data(data): Data<Value>| async move {
         let whisper_data: WhisperData = match serde_json::from_value(data) {
             Ok(data) => data,
